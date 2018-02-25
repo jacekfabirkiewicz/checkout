@@ -5,6 +5,7 @@ import jacekfabirkiewicz.checkout.Controller.ControllerException.ItemNotFoundExc
 import jacekfabirkiewicz.checkout.DAO.CartDAO;
 import jacekfabirkiewicz.checkout.DAO.ItemDAO;
 import jacekfabirkiewicz.checkout.DTO.CartDTO;
+import jacekfabirkiewicz.checkout.DTO.CheckoutDTO;
 import jacekfabirkiewicz.checkout.Entity.Cart;
 import jacekfabirkiewicz.checkout.Entity.Item;
 import lombok.AllArgsConstructor;
@@ -48,7 +49,7 @@ public class CartControllerService {
 
         if(null != cartList) {
             return cartList.stream().map(
-                    cart -> dtoService.getCartDto(cart)
+                    cart -> dtoService.getCartDTO(cart)
             ).collect(Collectors.toList());
         }
 
@@ -63,7 +64,7 @@ public class CartControllerService {
             throw new CartNotFoundException(cartId);
         }
 
-        return dtoService.getCartDto(cart);
+        return dtoService.getCartDTO(cart);
     }
 
     public CartDTO putToCart(String cartId, String itemId) {
@@ -82,7 +83,18 @@ public class CartControllerService {
 
         cartDAO.putToCart(cart, item);
 
-        return dtoService.getCartDto(cart);
+        return dtoService.getCartDTO(cart);
+    }
+
+    public CheckoutDTO getCheckout(@PathVariable String cartId) {
+
+        Cart cart = cartDAO.find( cartId );
+
+        if (null == cart) {
+            throw new CartNotFoundException(cartId);
+        }
+
+        return dtoService.getCheckoutDTO(cart);
     }
 
 }

@@ -1,6 +1,8 @@
 package jacekfabirkiewicz.checkout.Entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -14,6 +16,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Document
+@AllArgsConstructor @NoArgsConstructor
 @CompoundIndexes({
         @CompoundIndex(name = "unique_definition", def = "{'promotion': 1, 'item': 1}")
 })

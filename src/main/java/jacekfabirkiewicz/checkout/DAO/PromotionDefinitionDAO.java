@@ -2,7 +2,6 @@ package jacekfabirkiewicz.checkout.DAO;
 
 import jacekfabirkiewicz.checkout.Controller.ControllerException.ItemNotFoundException;
 import jacekfabirkiewicz.checkout.Controller.ControllerException.PromotionNotFoundException;
-import jacekfabirkiewicz.checkout.DTO.PromotionDTO;
 import jacekfabirkiewicz.checkout.DTO.PromotionDefinitionDTO;
 import jacekfabirkiewicz.checkout.Entity.Item;
 import jacekfabirkiewicz.checkout.Entity.Promotion;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -25,10 +25,9 @@ public class PromotionDefinitionDAO {
 
     private MongoOperations mongoOps;
     private ItemDAO itemDAO;
-    private PromotionDAO promotionDAO;
 
     public PromotionDefinition createPromotionDefinition(PromotionDefinitionDTO promotionDefinitionDTO) {
-        Promotion promotion = promotionDAO.find( promotionDefinitionDTO.getPromotionId());
+        Promotion promotion = mongoOps.findById( promotionDefinitionDTO.getPromotionId(), Promotion.class );
         if( null == promotion ) {
             throw new PromotionNotFoundException( promotionDefinitionDTO.getPromotionId() );
         }
@@ -58,10 +57,22 @@ public class PromotionDefinitionDAO {
     }
 
     public List<PromotionDefinition> getPromotionDefinitions(Promotion promotion) {
-        return mongoOps.find( query( where("promotion").is( promotion ) ), PromotionDefinition.class );
+        Date now = new Date();
+
+        return mongoOps.find( query( where("promotion").is( promotion ).and("dateFrom").lt( now )
+                .orOperator( where("dateTo").gt( now ), where("dateTo").exists( false ) ) ), PromotionDefinition.class );
+    }
+
+    public List<PromotionDefinition> getPromotionDefinitions(List<Item> itemList) {
+        Date now = new Date();
+
+        return mongoOps.find( query( where("item").in( itemList ).and("dateFrom").lt( now )
+                .orOperator( where("dateTo").gt( now ), where("dateTo").exists( false ) ) ), PromotionDefinition.class );
     }
 
     public PromotionDefinition find(String promotionDefinitionId) {
         return mongoOps.findById( promotionDefinitionId, PromotionDefinition.class );
     }
+
+
 }

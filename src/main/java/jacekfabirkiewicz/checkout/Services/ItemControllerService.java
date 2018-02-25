@@ -44,7 +44,7 @@ public class ItemControllerService {
 
         if(null != itemList) {
             return itemList.stream().map(
-                    cart -> (ItemDTO) dtoService.getItemDto(cart, new ItemDTO())
+                    cart -> (ItemDTO) dtoService.getItemDTO(cart, new ItemDTO())
             ).collect(Collectors.toList());
         }
 
@@ -59,7 +59,7 @@ public class ItemControllerService {
             throw new ItemNotFoundException( itemId );
         }
 
-        return (ItemDTO) dtoService.getItemDto( item, new ItemDTO() );
+        return (ItemDTO) dtoService.getItemDTO( item, new ItemDTO() );
     }
 
 

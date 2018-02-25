@@ -1,10 +1,9 @@
 package jacekfabirkiewicz.checkout.DAO;
 
-import jacekfabirkiewicz.checkout.DTO.ItemDTO;
 import jacekfabirkiewicz.checkout.DTO.PromotionDTO;
-import jacekfabirkiewicz.checkout.Entity.Item;
-import jacekfabirkiewicz.checkout.Entity.ItemPrice;
+import jacekfabirkiewicz.checkout.Entity.Bundle;
 import jacekfabirkiewicz.checkout.Entity.Promotion;
+import jacekfabirkiewicz.checkout.Entity.PromotionDefinition;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 public class PromotionDAO {
 
     private MongoOperations mongoOps;
+    private PromotionDefinitionDAO promotionDefinitionDAO;
 
     public Promotion createPromotion(PromotionDTO promotionDTO) {
         Promotion promotion = mongoOps.findOne( query( where("name").is( promotionDTO.getName() )), Promotion.class);
@@ -44,5 +44,28 @@ public class PromotionDAO {
 
     public Promotion find(String promotionId) {
         return mongoOps.findById( promotionId, Promotion.class );
+    }
+
+    public BigDecimal getPrice(Promotion promotion ) {
+        Date now = new Date();
+
+        // return price defined on PromotionDefinition if exists (only for promo type N*productX)
+        List<PromotionDefinition> promotionDefinitionList = promotionDefinitionDAO.getPromotionDefinitions( promotion );
+        if(null != promotionDefinitionList
+                && promotionDefinitionList.size() == 1
+                && null != promotionDefinitionList.get(0).getOverallPriceForQuantity()) {
+            return promotionDefinitionList.get(0).getOverallPriceForQuantity();
+        }
+
+        // return price defined on Bundle (for promo type { N0*productX0 + N1*ProductX1 + ...} )
+        Bundle bundle =  mongoOps.findOne( query(
+                where( "promotion" ).is( promotion )
+        ), Bundle.class );
+
+        if(null != bundle) {
+            return bundle.getPrice();
+        }
+
+        return null;
     }
 }

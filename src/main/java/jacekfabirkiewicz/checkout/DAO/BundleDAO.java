@@ -1,13 +1,9 @@
 package jacekfabirkiewicz.checkout.DAO;
 
-import jacekfabirkiewicz.checkout.Controller.ControllerException.ItemNotFoundException;
 import jacekfabirkiewicz.checkout.Controller.ControllerException.PromotionNotFoundException;
 import jacekfabirkiewicz.checkout.DTO.BundleDTO;
-import jacekfabirkiewicz.checkout.DTO.PromotionDefinitionDTO;
 import jacekfabirkiewicz.checkout.Entity.Bundle;
-import jacekfabirkiewicz.checkout.Entity.Item;
 import jacekfabirkiewicz.checkout.Entity.Promotion;
-import jacekfabirkiewicz.checkout.Entity.PromotionDefinition;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

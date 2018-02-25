@@ -1,10 +1,6 @@
 package jacekfabirkiewicz.checkout.DTO;
 
-import jacekfabirkiewicz.checkout.Entity.Item;
-import jacekfabirkiewicz.checkout.Entity.Promotion;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;

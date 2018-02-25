@@ -3,16 +3,15 @@ package jacekfabirkiewicz.checkout.DAO;
 import jacekfabirkiewicz.checkout.Entity.Cart;
 import jacekfabirkiewicz.checkout.Entity.CartItem;
 import jacekfabirkiewicz.checkout.Entity.Item;
-import jacekfabirkiewicz.checkout.Entity.ItemPrice;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;

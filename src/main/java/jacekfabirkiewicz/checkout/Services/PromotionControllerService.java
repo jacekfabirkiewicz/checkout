@@ -5,11 +5,9 @@ import jacekfabirkiewicz.checkout.DAO.BundleDAO;
 import jacekfabirkiewicz.checkout.DAO.PromotionDAO;
 import jacekfabirkiewicz.checkout.DAO.PromotionDefinitionDAO;
 import jacekfabirkiewicz.checkout.DTO.BundleDTO;
-import jacekfabirkiewicz.checkout.DTO.ItemDTO;
 import jacekfabirkiewicz.checkout.DTO.PromotionDTO;
 import jacekfabirkiewicz.checkout.DTO.PromotionDefinitionDTO;
 import jacekfabirkiewicz.checkout.Entity.Bundle;
-import jacekfabirkiewicz.checkout.Entity.Item;
 import jacekfabirkiewicz.checkout.Entity.Promotion;
 import jacekfabirkiewicz.checkout.Entity.PromotionDefinition;
 import lombok.AllArgsConstructor;
@@ -71,11 +69,15 @@ public class PromotionControllerService {
         return dtoService.getPromotionDTO( promotion );
     }
 
-    public ResponseEntity createPromotionDefinition(PromotionDefinitionDTO promotionDefinitionDTO) {
+    public ResponseEntity createPromotionDefinition(String promotionId, PromotionDefinitionDTO promotionDefinitionDTO) {
+        if(null == promotionId || !promotionId.equals( promotionDefinitionDTO.getPromotionId() )) {
+            throw new PromotionIdUnspecifiedException();
+        }
+
         PromotionDefinition promotionDefinition = promotionDefinitionDAO.createPromotionDefinition(promotionDefinitionDTO);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{promotionId}/definition/{promotionDefinitionId}")
+                .fromCurrentRequest().path("/{promotionDefinitionId}")
                 .buildAndExpand( promotionDefinition.getId() ).toUri();
 
         return ResponseEntity.created( location ).build();
@@ -96,11 +98,15 @@ public class PromotionControllerService {
         return dtoService.getPromotionDefinitionDTO( promotionDefinition );
     }
 
-    public ResponseEntity createBundle(BundleDTO bundleDTO) {
+    public ResponseEntity createBundle(String promotionId,  BundleDTO bundleDTO) {
+        if(null == promotionId || !promotionId.equals( bundleDTO.getPromotionId() )) {
+            throw new PromotionIdUnspecifiedException();
+        }
+
         Bundle bundle = bundleDAO.createBundle( bundleDTO );
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{promotionId}/bundle/{bundleId}")
+                .fromCurrentRequest().path("/{bundleId}")
                 .buildAndExpand( bundle.getId() ).toUri();
 
         return ResponseEntity.created( location ).build();

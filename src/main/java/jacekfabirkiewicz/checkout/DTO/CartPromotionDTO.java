@@ -1,8 +1,6 @@
 package jacekfabirkiewicz.checkout.DTO;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -14,9 +12,11 @@ public class CartPromotionDTO {
 
     private String promotionId;
 
-    private Integer quantity;
+    private String name;
 
     private BigDecimal price;
+
+    private Integer quantity;
 
     private List<CartItemDTO> cartItemDtoList;
 

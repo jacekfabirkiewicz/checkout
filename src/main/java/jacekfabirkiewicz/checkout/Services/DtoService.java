@@ -2,6 +2,7 @@ package jacekfabirkiewicz.checkout.Services;
 
 import jacekfabirkiewicz.checkout.DAO.BundleDAO;
 import jacekfabirkiewicz.checkout.DAO.ItemDAO;
+import jacekfabirkiewicz.checkout.DAO.PromotionDAO;
 import jacekfabirkiewicz.checkout.DAO.PromotionDefinitionDAO;
 import jacekfabirkiewicz.checkout.DTO.*;
 import jacekfabirkiewicz.checkout.DTO.Interfaces.ItemDTOI;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(force = true)
@@ -21,53 +24,55 @@ public class DtoService {
 
     private ItemDAO itemDao;
     private BundleDAO bundleDAO;
+    private PromotionDAO promotionDAO;
     private PromotionDefinitionDAO promotionDefinitionDAO;
+    private PromotionCalculationService promotionCalculationService;
 
-    public ItemDTOI getItemDto(Item item, ItemDTOI itemDto) {
+    public ItemDTOI getItemDTO(Item item, ItemDTOI itemDTO) {
         if(null == item) {
             return null;
         }
 
-        itemDto.setId( item.getId() );
-        itemDto.setName( item.getName() );
-        itemDto.setCode( item.getCode() );
-        itemDto.setPrice( itemDao.getItemPrice(item) );
+        itemDTO.setId( item.getId() );
+        itemDTO.setName( item.getName() );
+        itemDTO.setCode( item.getCode() );
+        itemDTO.setPrice( itemDao.getItemPrice(item) );
 
-        return itemDto;
+        return itemDTO;
     }
 
-    public CartItemDTO getCartItemDto(CartItem cartItem) {
-        if(null == cartItem) {
+    public CartItemDTO getCartItemDTO(CartItem cartItem) {
+        if(null == cartItem || cartItem.getQuantity().equals(0)) {
             return null;
         }
 
         Item item = cartItem.getItem();
 
-        CartItemDTO cartItemDto = (CartItemDTO) getItemDto(item, new CartItemDTO());
-        cartItemDto.setId(item.getId());
-        cartItemDto.setQuantity( cartItem.getQuantity() );
+        CartItemDTO cartItemDTO = (CartItemDTO) getItemDTO(item, new CartItemDTO());
+        cartItemDTO.setId(item.getId());
+        cartItemDTO.setQuantity( cartItem.getQuantity() );
 
-        return cartItemDto;
+        return cartItemDTO;
     }
 
-    public CartDTO getCartDto (Cart cart) {
+    public CartDTO getCartDTO(Cart cart) {
         if(null == cart) {
             return null;
         }
 
-        CartDTO cartDto = new CartDTO();
-        cartDto.setId( cart.getId());
-        cartDto.setIsPaid( cart.getIsPaid() );
-        cartDto.setCreatedAt( cart.getCreatedAt() ) ;
+        CartDTO cartDTO = new CartDTO();
+        cartDTO.setId( cart.getId());
+        cartDTO.setIsPaid( cart.getIsPaid() );
+        cartDTO.setCreatedAt( cart.getCreatedAt() ) ;
 
         List<CartItem> cartItemList = cart.getCartItemList();
         if(null != cartItemList) {
-            cartDto.setCartItemDtoList( cartItemList.stream().map(
-                    cartItem -> getCartItemDto( cartItem )
+            cartDTO.setCartItemDtoList( cartItemList.stream().map(
+                    cartItem -> getCartItemDTO( cartItem )
             ).collect(Collectors.toList()) );
         }
 
-        return cartDto;
+        return cartDTO;
 
     }
 
@@ -119,9 +124,60 @@ public class DtoService {
 
         BundleDTO bundleDTO = new BundleDTO();
         bundleDTO.setId(bundle.getId());
+        bundleDTO.setPromotionId( bundle.getPromotion().getId() );
         bundleDTO.setPrice(bundle.getPrice());
 
         return bundleDTO;
     }
 
+    public CheckoutDTO getCheckoutDTO (Cart cart) {
+        if(null == cart) {
+            return null;
+        }
+
+        CheckoutDTO checkoutDTO = new CheckoutDTO();
+        checkoutDTO.setIsPaid( cart.getIsPaid() );
+        checkoutDTO.setCreatedAt( cart.getCreatedAt() ) ;
+
+        List<CartItem> cartItemList = cart.getCartItemList();
+
+        Map<Promotion, Integer> calculatedPromotionList = promotionCalculationService.calculatePromotions( cartItemList );
+
+        if(null != cartItemList) {
+            checkoutDTO.setCartItemDtoList(
+                    cartItemList.stream().map( cartItem -> getCartItemDTO( cartItem ) )
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList())
+            );
+        }
+
+        if(null != calculatedPromotionList) {
+            checkoutDTO.setCartPromotionDtoList( calculatedPromotionList.entrySet().stream().map(
+                    calculatedPromotion -> getCartPromotionDTO( calculatedPromotion.getKey(),
+                            calculatedPromotion.getValue() )
+            ).collect(Collectors.toList()) );
+        }
+
+        return checkoutDTO;
+
+    }
+
+    private CartPromotionDTO getCartPromotionDTO(Promotion promotion, Integer quantity) {
+
+        CartPromotionDTO cartPromotionDTO = new CartPromotionDTO();
+        cartPromotionDTO.setPromotionId( promotion.getId() );
+        cartPromotionDTO.setName( promotion.getName() );
+        cartPromotionDTO.setPrice( promotionDAO.getPrice( promotion ));
+        cartPromotionDTO.setQuantity( quantity );
+        cartPromotionDTO.setCartItemDtoList( promotionDefinitionDAO.getPromotionDefinitions( promotion )
+                .stream().map( promotionDefinition -> {
+                    CartItem cartItem = new CartItem();
+                    cartItem.setItem( promotionDefinition.getItem() );
+                    cartItem.setQuantity( promotionDefinition.getQuantity() );
+                    return getCartItemDTO( cartItem );
+                }
+        ).collect( Collectors.toList() ) );
+
+        return cartPromotionDTO;
+    }
 }

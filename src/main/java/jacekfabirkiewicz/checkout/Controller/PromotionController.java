@@ -1,10 +1,8 @@
 package jacekfabirkiewicz.checkout.Controller;
 
 import jacekfabirkiewicz.checkout.DTO.BundleDTO;
-import jacekfabirkiewicz.checkout.DTO.ItemDTO;
 import jacekfabirkiewicz.checkout.DTO.PromotionDTO;
 import jacekfabirkiewicz.checkout.DTO.PromotionDefinitionDTO;
-import jacekfabirkiewicz.checkout.Entity.PromotionDefinition;
 import jacekfabirkiewicz.checkout.Services.PromotionControllerService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -47,8 +45,8 @@ public class PromotionController {
      */
 
     @RequestMapping(method = RequestMethod.POST, value = "/{promotionId}/definition")
-    public ResponseEntity createPromotionDefinition(@RequestBody PromotionDefinitionDTO promotionDefinitionDTO) {
-        return promotionControllerService.createPromotionDefinition(promotionDefinitionDTO);
+    public ResponseEntity createPromotionDefinition(@PathVariable String promotionId, @RequestBody PromotionDefinitionDTO promotionDefinitionDTO) {
+        return promotionControllerService.createPromotionDefinition(promotionId, promotionDefinitionDTO);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{promotionId}/definition/{promotionDefinitionId}")
@@ -61,8 +59,8 @@ public class PromotionController {
      */
 
     @RequestMapping(method = RequestMethod.POST, value = "/{promotionId}/bundle")
-    public ResponseEntity createBundle(@RequestBody BundleDTO bundleDTO) {
-        return promotionControllerService.createBundle(bundleDTO);
+    public ResponseEntity createBundle(@PathVariable String promotionId, @RequestBody BundleDTO bundleDTO) {
+        return promotionControllerService.createBundle(promotionId, bundleDTO);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{promotionId}/bundle/{bundleId}")
