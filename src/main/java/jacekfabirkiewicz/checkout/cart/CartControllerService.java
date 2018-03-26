@@ -1,7 +1,8 @@
-package jacekfabirkiewicz.checkout.service;
+package jacekfabirkiewicz.checkout.cart;
 
-import jacekfabirkiewicz.checkout.entity.Cart;
-import jacekfabirkiewicz.checkout.entity.Item;
+import jacekfabirkiewicz.checkout.common.DtoService;
+import jacekfabirkiewicz.checkout.domain.Cart;
+import jacekfabirkiewicz.checkout.domain.Item;
 import jacekfabirkiewicz.checkout.exception.CartNotFoundException;
 import jacekfabirkiewicz.checkout.exception.ItemNotFoundException;
 import jacekfabirkiewicz.checkout.model.CartDTO;
@@ -9,7 +10,6 @@ import jacekfabirkiewicz.checkout.model.CheckoutDTO;
 import jacekfabirkiewicz.checkout.repository.CartDAO;
 import jacekfabirkiewicz.checkout.repository.ItemDAO;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +17,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor(force = true)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Service
-public class CartControllerService {
+ class CartControllerService {
 
 
     private CartDAO cartDAO;
@@ -28,12 +27,12 @@ public class CartControllerService {
     private DtoService dtoService;
 
 
-    public Cart addCart() {
+    Cart addCart() {
 
         return cartDAO.createCart();
     }
 
-    public Collection<CartDTO> getCartList() {
+    Collection<CartDTO> getCartList() {
 
         List<Cart> cartList = cartDAO.getUnpaidCarts();
 
@@ -46,7 +45,7 @@ public class CartControllerService {
         return null;
     }
 
-    public CartDTO getCart(String cartId) {
+    CartDTO getCart(String cartId) {
 
         Cart cart = cartDAO.find( cartId );
 
@@ -57,7 +56,7 @@ public class CartControllerService {
         return dtoService.getCartDTO(cart);
     }
 
-    public CartDTO putToCart(String cartId, String itemId) {
+    CartDTO putToCart(String cartId, String itemId) {
 
         Item item = itemDAO.find( itemId );
 
@@ -76,7 +75,7 @@ public class CartControllerService {
         return dtoService.getCartDTO(cart);
     }
 
-    public CheckoutDTO getCheckout(String cartId) {
+    CheckoutDTO getCheckout(String cartId) {
 
         Cart cart = cartDAO.find( cartId );
 

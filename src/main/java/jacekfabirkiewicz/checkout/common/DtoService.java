@@ -1,13 +1,12 @@
-package jacekfabirkiewicz.checkout.service;
+package jacekfabirkiewicz.checkout.common;
 
-import jacekfabirkiewicz.checkout.entity.*;
+import jacekfabirkiewicz.checkout.domain.*;
 import jacekfabirkiewicz.checkout.model.*;
 import jacekfabirkiewicz.checkout.repository.BundleDAO;
 import jacekfabirkiewicz.checkout.repository.ItemDAO;
 import jacekfabirkiewicz.checkout.repository.PromotionDAO;
 import jacekfabirkiewicz.checkout.repository.PromotionDefinitionDAO;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor(force = true)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Service
 public class DtoService {

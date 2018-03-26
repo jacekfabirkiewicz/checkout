@@ -1,8 +1,9 @@
-package jacekfabirkiewicz.checkout.service;
+package jacekfabirkiewicz.checkout.promotion;
 
-import jacekfabirkiewicz.checkout.entity.Bundle;
-import jacekfabirkiewicz.checkout.entity.Promotion;
-import jacekfabirkiewicz.checkout.entity.PromotionDefinition;
+import jacekfabirkiewicz.checkout.common.DtoService;
+import jacekfabirkiewicz.checkout.domain.Bundle;
+import jacekfabirkiewicz.checkout.domain.Promotion;
+import jacekfabirkiewicz.checkout.domain.PromotionDefinition;
 import jacekfabirkiewicz.checkout.exception.*;
 import jacekfabirkiewicz.checkout.model.BundleDTO;
 import jacekfabirkiewicz.checkout.model.PromotionDTO;
@@ -11,7 +12,6 @@ import jacekfabirkiewicz.checkout.repository.BundleDAO;
 import jacekfabirkiewicz.checkout.repository.PromotionDAO;
 import jacekfabirkiewicz.checkout.repository.PromotionDefinitionDAO;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +19,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor(force = true)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Service
-public class PromotionControllerService {
+class PromotionControllerService {
 
 
     private DtoService dtoService;
@@ -31,7 +30,7 @@ public class PromotionControllerService {
     private BundleDAO bundleDAO;
 
 
-    public Promotion createPromotion( PromotionDTO promotionDto ) {
+    Promotion createPromotion( PromotionDTO promotionDto ) {
         
         return promotionDAO.createPromotion(promotionDto);
     }
@@ -49,7 +48,7 @@ public class PromotionControllerService {
         return null;
     }
 
-    public PromotionDTO getPromotion(String promotionId) {
+    PromotionDTO getPromotion(String promotionId) {
 
         Promotion promotion = promotionDAO.find( promotionId );
 
@@ -60,7 +59,7 @@ public class PromotionControllerService {
         return dtoService.getPromotionDTO( promotion );
     }
 
-    public PromotionDefinition createPromotionDefinition(String promotionId, PromotionDefinitionDTO promotionDefinitionDTO) {
+    PromotionDefinition createPromotionDefinition(String promotionId, PromotionDefinitionDTO promotionDefinitionDTO) {
         if(null == promotionId || !promotionId.equals( promotionDefinitionDTO.getPromotionId() )) {
             throw new PromotionIdUnspecifiedException();
         }
@@ -68,7 +67,7 @@ public class PromotionControllerService {
         return promotionDefinitionDAO.createPromotionDefinition(promotionDefinitionDTO);
     }
 
-    public PromotionDefinitionDTO getPromotionDefinition(String promotionId, String promotionDefinitionId) {
+    PromotionDefinitionDTO getPromotionDefinition(String promotionId, String promotionDefinitionId) {
 
         PromotionDefinition promotionDefinition = promotionDefinitionDAO.find( promotionDefinitionId );
 
@@ -83,7 +82,7 @@ public class PromotionControllerService {
         return dtoService.getPromotionDefinitionDTO( promotionDefinition );
     }
 
-    public Bundle createBundle(String promotionId,  BundleDTO bundleDTO) {
+    Bundle createBundle(String promotionId,  BundleDTO bundleDTO) {
         if(null == promotionId || !promotionId.equals( bundleDTO.getPromotionId() )) {
             throw new PromotionIdUnspecifiedException();
         }
@@ -91,7 +90,7 @@ public class PromotionControllerService {
         return bundleDAO.createBundle( bundleDTO );
     }
 
-    public BundleDTO getBundle(String promotionId, String bundleId) {
+    BundleDTO getBundle(String promotionId, String bundleId) {
 
         Bundle bundle = bundleDAO.find( bundleId );
 

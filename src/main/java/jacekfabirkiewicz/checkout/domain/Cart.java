@@ -1,4 +1,4 @@
-package jacekfabirkiewicz.checkout.entity;
+package jacekfabirkiewicz.checkout.domain;
 
 import lombok.Getter;
 import lombok.Setter;

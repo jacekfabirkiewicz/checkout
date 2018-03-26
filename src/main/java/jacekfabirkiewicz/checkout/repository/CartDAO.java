@@ -1,10 +1,9 @@
 package jacekfabirkiewicz.checkout.repository;
 
-import jacekfabirkiewicz.checkout.entity.Cart;
-import jacekfabirkiewicz.checkout.entity.CartItem;
-import jacekfabirkiewicz.checkout.entity.Item;
+import jacekfabirkiewicz.checkout.domain.Cart;
+import jacekfabirkiewicz.checkout.domain.CartItem;
+import jacekfabirkiewicz.checkout.domain.Item;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Repository;
@@ -16,7 +15,6 @@ import java.util.List;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
-@NoArgsConstructor(force = true)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Repository
 public class CartDAO {

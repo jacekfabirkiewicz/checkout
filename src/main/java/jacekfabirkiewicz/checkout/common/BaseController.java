@@ -1,4 +1,4 @@
-package jacekfabirkiewicz.checkout.controller.base;
+package jacekfabirkiewicz.checkout.common;
 
 import jacekfabirkiewicz.checkout.exception.base.BaseNotFoundException;
 import org.springframework.http.HttpStatus;

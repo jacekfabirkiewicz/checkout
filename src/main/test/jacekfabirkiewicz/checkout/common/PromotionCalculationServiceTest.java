@@ -1,9 +1,9 @@
-package jacekfabirkiewicz.checkout.service;
+package jacekfabirkiewicz.checkout.common;
 
-import jacekfabirkiewicz.checkout.entity.CartItem;
-import jacekfabirkiewicz.checkout.entity.Item;
-import jacekfabirkiewicz.checkout.entity.Promotion;
-import jacekfabirkiewicz.checkout.entity.PromotionDefinition;
+import jacekfabirkiewicz.checkout.domain.CartItem;
+import jacekfabirkiewicz.checkout.domain.Item;
+import jacekfabirkiewicz.checkout.domain.Promotion;
+import jacekfabirkiewicz.checkout.domain.PromotionDefinition;
 import jacekfabirkiewicz.checkout.repository.PromotionDefinitionDAO;
 import org.junit.Before;
 import org.junit.Test;

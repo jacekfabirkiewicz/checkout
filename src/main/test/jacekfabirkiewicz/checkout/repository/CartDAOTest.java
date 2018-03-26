@@ -1,7 +1,7 @@
 package jacekfabirkiewicz.checkout.repository;
 
-import jacekfabirkiewicz.checkout.entity.Cart;
-import jacekfabirkiewicz.checkout.entity.Item;
+import jacekfabirkiewicz.checkout.domain.Cart;
+import jacekfabirkiewicz.checkout.domain.Item;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

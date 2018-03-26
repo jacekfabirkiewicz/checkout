@@ -1,7 +1,7 @@
 package jacekfabirkiewicz.checkout.repository;
 
-import jacekfabirkiewicz.checkout.entity.Item;
-import jacekfabirkiewicz.checkout.entity.ItemPrice;
+import jacekfabirkiewicz.checkout.domain.Item;
+import jacekfabirkiewicz.checkout.domain.ItemPrice;
 import jacekfabirkiewicz.checkout.model.ItemDTO;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

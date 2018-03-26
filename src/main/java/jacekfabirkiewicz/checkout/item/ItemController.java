@@ -1,11 +1,9 @@
-package jacekfabirkiewicz.checkout.controller;
+package jacekfabirkiewicz.checkout.item;
 
-import jacekfabirkiewicz.checkout.controller.base.BaseController;
-import jacekfabirkiewicz.checkout.entity.Item;
+import jacekfabirkiewicz.checkout.common.BaseController;
+import jacekfabirkiewicz.checkout.domain.Item;
 import jacekfabirkiewicz.checkout.model.ItemDTO;
-import jacekfabirkiewicz.checkout.service.ItemControllerService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +14,13 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/items")
-@NoArgsConstructor(force = true)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ItemController extends BaseController {
+class ItemController extends BaseController {
 
-    private ItemControllerService itemControllerService;
+    ItemControllerService itemControllerService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createItem(@RequestBody ItemDTO itemDto) {
+    ResponseEntity createItem(@RequestBody ItemDTO itemDto) {
         Item item = itemControllerService.createItem(itemDto);
 
         URI location = ServletUriComponentsBuilder
@@ -34,12 +31,12 @@ public class ItemController extends BaseController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<ItemDTO> getItemList() {
+    Collection<ItemDTO> getItemList() {
         return itemControllerService.getItemList();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{itemId}")
-    public ItemDTO getItem(@PathVariable String itemId) {
+    ItemDTO getItem(@PathVariable String itemId) {
         return itemControllerService.getItem(itemId);
     }
 

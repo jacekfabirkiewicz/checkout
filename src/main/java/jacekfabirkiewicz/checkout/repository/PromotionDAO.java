@@ -1,8 +1,8 @@
 package jacekfabirkiewicz.checkout.repository;
 
-import jacekfabirkiewicz.checkout.entity.Bundle;
-import jacekfabirkiewicz.checkout.entity.Promotion;
-import jacekfabirkiewicz.checkout.entity.PromotionDefinition;
+import jacekfabirkiewicz.checkout.domain.Bundle;
+import jacekfabirkiewicz.checkout.domain.Promotion;
+import jacekfabirkiewicz.checkout.domain.PromotionDefinition;
 import jacekfabirkiewicz.checkout.model.PromotionDTO;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

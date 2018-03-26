@@ -1,11 +1,10 @@
 package jacekfabirkiewicz.checkout.repository;
 
-import jacekfabirkiewicz.checkout.entity.Bundle;
-import jacekfabirkiewicz.checkout.entity.Promotion;
+import jacekfabirkiewicz.checkout.domain.Bundle;
+import jacekfabirkiewicz.checkout.domain.Promotion;
 import jacekfabirkiewicz.checkout.exception.PromotionNotFoundException;
 import jacekfabirkiewicz.checkout.model.BundleDTO;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Repository;
@@ -15,7 +14,6 @@ import java.util.List;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
-@NoArgsConstructor(force = true)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Repository
 public class BundleDAO {

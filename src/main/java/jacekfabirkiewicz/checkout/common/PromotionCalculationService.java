@@ -1,11 +1,10 @@
-package jacekfabirkiewicz.checkout.service;
+package jacekfabirkiewicz.checkout.common;
 
-import jacekfabirkiewicz.checkout.entity.CartItem;
-import jacekfabirkiewicz.checkout.entity.Promotion;
-import jacekfabirkiewicz.checkout.entity.PromotionDefinition;
+import jacekfabirkiewicz.checkout.domain.CartItem;
+import jacekfabirkiewicz.checkout.domain.Promotion;
+import jacekfabirkiewicz.checkout.domain.PromotionDefinition;
 import jacekfabirkiewicz.checkout.repository.PromotionDefinitionDAO;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor(force = true)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Service
-public class PromotionCalculationService {
+class PromotionCalculationService {
 
     private PromotionDefinitionDAO promotionDefinitionDAO;
 
@@ -30,7 +28,7 @@ public class PromotionCalculationService {
      * @param cartItemList Initial list of cart items
      * @return Map of found promotions and their quantities
      */
-    public Map<Promotion, Integer> calculatePromotions(List<CartItem> cartItemList) {
+    Map<Promotion, Integer> calculatePromotions(List<CartItem> cartItemList) {
         Map<Promotion, Integer> promotionsFound = new HashMap<>();
 
         if (null == cartItemList ) {

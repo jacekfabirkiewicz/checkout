@@ -1,11 +1,11 @@
-package jacekfabirkiewicz.checkout.service;
+package jacekfabirkiewicz.checkout.item;
 
-import jacekfabirkiewicz.checkout.entity.Item;
+import jacekfabirkiewicz.checkout.common.DtoService;
+import jacekfabirkiewicz.checkout.domain.Item;
 import jacekfabirkiewicz.checkout.exception.ItemNotFoundException;
 import jacekfabirkiewicz.checkout.model.ItemDTO;
 import jacekfabirkiewicz.checkout.repository.ItemDAO;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +13,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor(force = true)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Service
-public class ItemControllerService {
+class ItemControllerService {
 
 
     private ItemDAO itemDao;
@@ -24,12 +23,12 @@ public class ItemControllerService {
     private DtoService dtoService;
 
 
-    public Item createItem( ItemDTO itemDTO) {
+    Item createItem( ItemDTO itemDTO) {
         
         return itemDao.createItem(itemDTO);
     }
 
-    public Collection<ItemDTO> getItemList() {
+    Collection<ItemDTO> getItemList() {
 
         List<Item> itemList = itemDao.getItems();
 
@@ -42,7 +41,7 @@ public class ItemControllerService {
         return null;
     }
 
-    public ItemDTO getItem(String itemId) {
+    ItemDTO getItem(String itemId) {
 
         Item item = itemDao.find( itemId );
         
